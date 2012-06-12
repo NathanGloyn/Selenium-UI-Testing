@@ -8,13 +8,13 @@ namespace Selenium.Tests.PageObjectAlt
     public class AssemblySetup
     {
         public static IWebDriver CurrentDriver;
-        private static Support iisSupport = new Support();
+        private static Support.IISExpress iisSupport = new Support.IISExpress();
         
 
         [SetUp]
         public void Setup()
         {
-            iisSupport.StartIIS("Selenium");
+            iisSupport.Start("Selenium");
             CurrentDriver = new FirefoxDriver();
         }
 
@@ -22,7 +22,7 @@ namespace Selenium.Tests.PageObjectAlt
         public void TearDown()
         {
             CurrentDriver.Quit();
-            iisSupport.StopIIS();
+            iisSupport.Stop();
         }
     }
 }

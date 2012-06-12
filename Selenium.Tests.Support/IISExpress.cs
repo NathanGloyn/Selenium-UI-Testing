@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace Selenium.Tests
+namespace Selenium.Tests.Support
 {
     public class Support
     {
