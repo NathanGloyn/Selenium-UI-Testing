@@ -14,7 +14,7 @@ namespace Selenium.Tests.PageObjectAlt
         [SetUp]
         public void Setup()
         {
-            iisSupport.Start("Selenium");
+            iisSupport.Start("Selenium", 1392);
             CurrentDriver = new FirefoxDriver();
         }
 

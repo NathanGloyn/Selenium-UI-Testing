@@ -1,50 +1,57 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
+using EnvDTE;
+using EnvDTE80;
+using EnvDTE90;
+using EnvDTE100;
 
 namespace Selenium.Tests.Support
 {
-    public class Support
+    public class IISExpress
     {
-        const int iisPort = 1392;
-        private string _applicationName;
-        private Process _iisProcess;
+        private System.Diagnostics.Process iisProcess;
 
-        public void StartIIS(string applicationName)
+        public void Start(string applicationName, int iisPort)
         {
-            _applicationName = applicationName;
-
-            var running = Process.GetProcessesByName("iisexpress",".");
+            var running = System.Diagnostics.Process.GetProcessesByName("iisexpress", ".");
             if (running.Length == 0)
             {
-                var applicationPath = GetApplicationPath(_applicationName);
+                var applicationPath = GetApplicationPath(applicationName);
                 var programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
 
-                _iisProcess = new Process();
-                _iisProcess.StartInfo.CreateNoWindow = true;
-                _iisProcess.StartInfo.FileName = programFiles + "\\IIS Express\\iisexpress.exe";
-                _iisProcess.StartInfo.Arguments = string.Format("/path:\"{0}\" /port:{1}", applicationPath, iisPort);
-                _iisProcess.Start();
+                iisProcess = new System.Diagnostics.Process();
+                iisProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                iisProcess.StartInfo.FileName = programFiles + "\\IIS Express\\iisexpress.exe";
+                iisProcess.StartInfo.Arguments = string.Format("/path:\"{0}\" /port:{1}", applicationPath, iisPort);
+                iisProcess.Start();
             }
             else
             {
-                _iisProcess = running[0];
+                iisProcess = running[0];
             }
         }
 
-        public void StopIIS()
+        public void Stop()
         {
-            if (_iisProcess.HasExited == false)
+            if (iisProcess.HasExited == false)
             {
-                _iisProcess.Kill();
+                iisProcess.Kill();
             }
              
         }
 
+        /// <summary>
+        /// Intention is to find the solutin folder, unfortunatley no easy
+        /// </summary>
+        /// <param name="applicationName"></param>
+        /// <returns></returns>
         protected virtual string GetApplicationPath(string applicationName)
         {
-            var solutionFolder = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)));
-            return Path.Combine(solutionFolder, applicationName);
+            EnvDTE80.DTE2 dte2 = (EnvDTE80.DTE2)System.Runtime.InteropServices.Marshal.GetActiveObject("VisualStudio.DTE.11.0");
+
+            return Path.Combine(Path.GetDirectoryName(dte2.Solution.FullName), applicationName);
         }
 
     }
