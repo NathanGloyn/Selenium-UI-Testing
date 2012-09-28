@@ -6,6 +6,7 @@ Thumbs.db
 *.exe
 !NuGet.exe
 !chromedriver.exe
+!IEDriverServer.exe
 *.pdb
 *.user
 *.aps

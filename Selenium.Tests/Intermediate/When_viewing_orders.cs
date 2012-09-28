@@ -12,32 +12,32 @@ namespace Selenium.Tests.Intermediate
     {
         private IWebDriver driver;
 
-        [TestFixtureSetUp]
-        public void FixtureSetup()
-        {
-            driver = new FirefoxDriver();
-            driver.Navigate().GoToUrl("http://localhost:1392/");
-        }
+        //[TestFixtureSetUp]
+        //public void FixtureSetup()
+        //{
+        //    driver = new FirefoxDriver();
+        //    driver.Navigate().GoToUrl("http://localhost:1392/");
+        //}
 
 
-        [TestFixtureTearDown]
-        public void FixtureTearDown()
-        {
-            driver.Quit();
-        }
+        //[TestFixtureTearDown]
+        //public void FixtureTearDown()
+        //{
+        //    driver.Quit();
+        //}
 
-        [SetUp]
-        public void TestSetup()
-        {
-            driver.Navigate().GoToUrl("http://localhost:1392/");
-            Login();            
-        }
+        //[SetUp]
+        //public void TestSetup()
+        //{
+        //    driver.Navigate().GoToUrl("http://localhost:1392/");
+        //    Login();            
+        //}
 
-        [TearDown]
-        public void TestTearDown()
-        {
-            Logout();
-        }
+        //[TearDown]
+        //public void TestTearDown()
+        //{
+        //    Logout();
+        //}
 
         public void Login(IWebDriver driverToUse=null)
         {
@@ -84,7 +84,7 @@ namespace Selenium.Tests.Intermediate
         [Test]
         public void Should_page_through_items_in_chrome()
         {
-            IWebDriver chromeDriver = new ChromeDriver();
+            IWebDriver chromeDriver = new ChromeDriver(@"C:\Dropbox\Presentations\Full Sessions\Selenium a UI testing paradigm\Code\Selenium\Selenium.Tests\bin\Debug");
             chromeDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(10));
 
             chromeDriver.Navigate().GoToUrl("http://localhost:1392/");

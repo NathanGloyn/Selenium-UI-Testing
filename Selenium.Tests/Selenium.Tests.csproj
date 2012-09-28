@@ -41,7 +41,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Selenium\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.9\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.5.10.11092\lib\nunit.framework.dll</HintPath>
@@ -60,9 +60,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WebDriver, Version=2.24.0.0, Culture=neutral, PublicKeyToken=1c2bd1631853048f, processorArchitecture=MSIL">
+    <Reference Include="WebDriver, Version=2.25.1.0, Culture=neutral, PublicKeyToken=1c2bd1631853048f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Selenium\WebDriver.dll</HintPath>
+      <HintPath>..\packages\Selenium.WebDriver.2.25.1\lib\net40\WebDriver.dll</HintPath>
     </Reference>
     <Reference Include="WebDriver.Support, Version=2.24.0.0, Culture=neutral, PublicKeyToken=1c2bd1631853048f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -70,9 +70,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Advanced\When_trying_to_access_the_site.cs" />
     <Compile Include="Intermediate\When_trying_to_access_the_site.cs" />
     <Compile Include="Intermediate\When_viewing_orders.cs" />
     <Compile Include="PageObjectAlternative\AssemblySetup.cs" />
+    <Compile Include="PageObjectAlternative\HomePage.cs" />
     <Compile Include="PageObjectAlternative\LoginPage.cs" />
     <Compile Include="PageObjectAlternative\When_trying_to_access_the_site.cs" />
     <Compile Include="PageObject\HomePage.cs" />
@@ -88,6 +90,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Selenium.DSL\Selenium.DSL.csproj">
+      <Project>{79e605c1-fc4f-4b44-ba31-38ad53d681c3}</Project>
+      <Name>Selenium.DSL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Selenium.Tests.Support\Selenium.Tests.Support.csproj">
       <Project>{0C60F62D-5758-4C20-81E3-68D3AF400182}</Project>
       <Name>Selenium.Tests.Support</Name>
