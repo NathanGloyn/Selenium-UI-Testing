@@ -12,11 +12,11 @@ namespace Selenium.DSL.ProcessHelpers
         Orders
     }
 
-    public class NavigateHelper : Selenium.DSL.INavigate
+    public class Navigate : Selenium.DSL.INavigate
     {
         static Dictionary<Pages, string> pageUrls;
 
-        public NavigateHelper()
+        public Navigate()
         {
             PopulatePageUrls();
         }
@@ -37,7 +37,7 @@ namespace Selenium.DSL.ProcessHelpers
                 {
                     {Pages.Login,"login.aspx"},
                     {Pages.Home, "default.aspx"},
-                    {Pages.Orders, "orders.aspx"}
+                    {Pages.Orders, "Orders/List.aspx"}
                 };
             }
         }

@@ -6,24 +6,17 @@ namespace Selenium.DSL.PageObjects
 {
     public abstract class PageObjectBase: INavigate
     {
-        private NavigateHelper navigate;
-
-        private NavigateHelper navigation
-        {
-            get
-            {
-                if (navigate == null)
-                {
-                    navigate = new NavigateHelper();
-                }
-
-                return navigate;
-            }
-        }
+        protected  Navigate Navigation { get; set; }
 
         protected string baseUrl = "http://localhost:1392/";
 
-        protected static readonly IWebDriver driver = Driver.Current;
+        protected readonly IWebDriver driver;
+
+        protected PageObjectBase()
+        {
+            driver = Driver.Current;
+            this.Navigation = new Navigate();
+        }
 
         public string PageTitle()
         {
@@ -40,14 +33,14 @@ namespace Selenium.DSL.PageObjects
             return driver.FindElement(By.TagName("body")).Text.Contains(textToFind);
         }
 
-        public NavigateHelper Navigate()
+        public INavigate Navigate()
         {
-            return navigate;
+            return this;
         }
 
         public void To(Pages page)
         {
-            navigate.To(page);
+            Navigation.To(page);
         }
     }
 }

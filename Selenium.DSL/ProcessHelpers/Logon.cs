@@ -2,25 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using OpenQA.Selenium;
 using Selenium.DSL.PageObjects;
 
 namespace Selenium.DSL.ProcessHelpers
 {
-    public class LogonHelper
+    public class Logon
     {
         LoginPage page;
+        HomePage homePage;
+        bool loggedIn;
 
-        public LogonHelper()
+
+        public Logon()
         {
             this.page = new LoginPage();
         }
 
-        public LogonHelper UsingCredentials(string userName, string password)
+        public Logon UsingCredentials(string userName, string password)
         {
             page.Password = password;
             page.UserName = userName;
 
-            page.ClickLogin();
+            homePage= page.ClickLogin();
+
+            loggedIn = homePage != null;
+
 
             return this;
         }
@@ -33,6 +40,16 @@ namespace Selenium.DSL.ProcessHelpers
         public bool PasswordMissing()
         {
             return page.PasswordIsMissing;
+        }
+
+        public bool LoggedIn()
+        {
+            return loggedIn;
+        }
+
+        public void LogOut()
+        {
+            homePage.Logout();
         }
     }
 }

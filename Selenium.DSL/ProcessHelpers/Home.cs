@@ -2,22 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using OpenQA.Selenium;
 using Selenium.DSL.PageObjects;
 
 namespace Selenium.DSL.ProcessHelpers
 {
-    public static class HomeHelper
+    public class Home
     {
-        static HomePage page;
+        HomePage page;
 
-        static HomeHelper()
+        public Home()
         {
             page = new HomePage();
         }
 
-        public static void LogOut()
+        public void LogOut()
         {
             page.Logout();
         }
+
     }
 }
