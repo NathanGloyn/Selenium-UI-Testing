@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 using Selenium.DSL.ProcessHelpers;
 using System.Linq;
+using System;
+using Selenium.DSL.Support;
 
 namespace Selenium.DSL.PageObjects
 {
@@ -50,6 +51,21 @@ namespace Selenium.DSL.PageObjects
         public void To(Pages page)
         {
             Navigation.To(page);
+        }
+
+        protected IList<T> GetTableRows<T>(Func<IWebDriver, int, T> createRow) where T : RowBase
+        {
+            var items = new List<T>();
+
+            var table = driver.FindElements(By.ClassName("td"));
+
+            for (int i = 1; i < table.Count + 1; i++)
+            {
+
+                items.Add(createRow(driver, i + 1));
+            }
+
+            return items;
         }
     }
 }

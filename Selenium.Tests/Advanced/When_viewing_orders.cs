@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using OpenQA.Selenium.Firefox;
 using Selenium.DSL;
 using Selenium.DSL.ProcessHelpers;
-using Selenium.DSL.PageObjects;
 
 namespace Selenium.Tests.Advanced
 {
     [TestFixture]
     public class When_viewing_orders
     {
-        private Orders orderProcess;
+        private Orders<Admin> orderProcess;
 
         public When_viewing_orders()
         {
@@ -23,14 +20,7 @@ namespace Selenium.Tests.Advanced
         [TestFixtureSetUp]
         public void FixtureSetUp()
         {
-            orderProcess = new Orders(() =>
-            {
-                var login = new Logon();
-                login.UsingCredentials("Admin", "testing");
-
-                var navigate = new Navigate();
-                navigate.To(Pages.Orders);
-            });
+            orderProcess = new Orders<Admin>();
         }
 
         [Test]
@@ -63,9 +53,9 @@ namespace Selenium.Tests.Advanced
         }
 
         [Test]
-        public void Should_be_able_to_display_order_detail()
+        public void Should_be_able_to_open_page_displaying_details_of_an_order()
         {
-            Assert.IsInstanceOf<Order_Detail>(orderProcess.Rows[0].Details(),"Unable to display the Order Detail page");
+            Assert.That(orderProcess.OpensOrderDetailPage(orderProcess.Rows[0]), "Unable to display the Order Detail page");
         }
 
         [TearDown]

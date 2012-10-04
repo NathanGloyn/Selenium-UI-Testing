@@ -63,7 +63,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin.cs" />
     <Compile Include="Driver.cs" />
+    <Compile Include="PageObjects\ListItem.cs" />
+    <Compile Include="PageObjects\OrderRow.cs" />
+    <Compile Include="PageObjects\RowBase.cs" />
+    <Compile Include="User.cs" />
+    <Compile Include="UserBase.cs" />
     <Compile Include="WebDriverExtenstion.cs" />
     <Compile Include="PageObjects\OrdersPage.cs" />
     <Compile Include="PageObjects\Order_Detail.cs" />

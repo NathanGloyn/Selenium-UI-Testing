@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Selenium.DSL.PageObjects;
 
 namespace Selenium.DSL.ProcessHelpers
 {
-    public class Orders
+    public class Orders<T> where T: UserBase, new()
     {
-        OrdersPage page;
+        readonly OrdersPage page;
 
-        public Orders(Action NavigateToPage)
+        public Orders()
         {
             page = new OrdersPage();
             if(page.PageTitle() != OrdersPage.PageName)
@@ -28,9 +25,25 @@ namespace Selenium.DSL.ProcessHelpers
             page.SelectCustomerByValue(customer.Value);
         }
 
+        public bool OpensOrderDetailPage(OrderRow row)
+        {
+            return row.Details() != null;
+        }
+
         public void Reset()
         {
             page.Navigate().To(Pages.Orders);
+        }
+
+        private void NavigateToPage()
+        {
+            var user = new T();
+
+            var login = new Logon();
+            login.UsingCredentials(user.UserName, user.Password);
+
+            var navigate = new Navigate();
+            navigate.To(Pages.Orders);            
         }
     }
 }

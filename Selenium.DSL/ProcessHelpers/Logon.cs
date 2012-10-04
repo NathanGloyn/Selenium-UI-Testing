@@ -28,7 +28,6 @@ namespace Selenium.DSL.ProcessHelpers
 
             loggedIn = homePage != null;
 
-
             return this;
         }
 
