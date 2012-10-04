@@ -9,23 +9,28 @@ namespace Selenium.DSL.ProcessHelpers
     public class Orders
     {
         OrdersPage page;
-        Logon login;
 
-        public Orders()
+        public Orders(Action NavigateToPage)
         {
-            NavigateToPage();
             page = new OrdersPage();
+            if(page.PageTitle() != OrdersPage.PageName)
+                NavigateToPage();
         }
+
+        public IList<ListItem> Customers { get { return page.Customers; } }
+
+        public IList<ListItem> Employees { get { return page.Employees;} }
 
         public IList<OrderRow> Rows { get { return page.Rows; } }
 
-        private void NavigateToPage()
+        public void FilterByCustomer(ListItem customer)
         {
-            login = new Logon();
-            login.UsingCredentials("Admin", "testing");
+            page.SelectCustomerByValue(customer.Value);
+        }
 
-            var navigate = new Navigate();
-            navigate.To(Pages.Orders);
+        public void Reset()
+        {
+            page.Navigate().To(Pages.Orders);
         }
     }
 }

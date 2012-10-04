@@ -1,6 +1,9 @@
-﻿using OpenQA.Selenium;
+﻿using System.Collections.Generic;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Support.UI;
 using Selenium.DSL.ProcessHelpers;
+using System.Linq;
 
 namespace Selenium.DSL.PageObjects
 {
@@ -28,9 +31,15 @@ namespace Selenium.DSL.PageObjects
             return driver.Url;
         }
 
-        public bool TextPresent(string textToFind)
+        protected IList<ListItem> GetDropDownEntries(string Id)
         {
-            return driver.FindElement(By.TagName("body")).Text.Contains(textToFind);
+            var dropDown = GetDropDownList(Id);
+            return dropDown.Options.Select(o => new ListItem { Value = o.GetAttribute("value"), Text = o.Text }).ToList();
+        }
+
+        protected SelectElement GetDropDownList(string Id)
+        {
+            return new SelectElement(driver.FindElement(By.Id(Id)));
         }
 
         public INavigate Navigate()
