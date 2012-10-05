@@ -58,6 +58,16 @@ namespace Selenium.Tests.Advanced
             Assert.That(orderProcess.OpensOrderDetailPage(orderProcess.Rows[0]), "Unable to display the Order Detail page");
         }
 
+        [Test]
+        public void Should_page_through_the_data()
+        {
+            for (int i = 0; i < 82; i++)
+            {
+                orderProcess.Pager().Next();
+                Assert.AreEqual(i + 2, orderProcess.Pager().CurrentPage());
+            }
+        }
+
         [TearDown]
         public void TearDown()
         {

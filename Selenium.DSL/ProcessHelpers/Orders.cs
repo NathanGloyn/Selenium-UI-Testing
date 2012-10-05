@@ -1,14 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.Configuration;
 using Selenium.DSL.PageObjects;
+using Selenium.DSL.Support;
+using Selenium.Tests.Support;
 
 namespace Selenium.DSL.ProcessHelpers
 {
     public class Orders<T> where T: UserBase, new()
     {
+        private DatabaseSupport database;
         readonly OrdersPage page;
 
         public Orders()
         {
+            database = new DatabaseSupport(ConfigurationManager.ConnectionStrings["Northwind"].ConnectionString);
             page = new OrdersPage();
             if(page.PageTitle() != OrdersPage.PageName)
                 NavigateToPage();
@@ -30,8 +35,14 @@ namespace Selenium.DSL.ProcessHelpers
             return row.Details() != null;
         }
 
+        public Pager Pager()
+        {
+            return page.Pager();
+        }
+
         public void Reset()
         {
+            database.RunScript("TestScripts\\Orders_Reset.sql");
             page.Navigate().To(Pages.Orders);
         }
 

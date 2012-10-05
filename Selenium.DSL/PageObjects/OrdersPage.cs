@@ -10,10 +10,10 @@ namespace Selenium.DSL.PageObjects
 {
     public class OrdersPage : PageObjectBase
     {
+
         IList<OrderRow> rows = new List<OrderRow>();
         internal static string PageName = "Orders";
-
-        public OrdersPage() { }
+        private Pager pagerControl;
 
         public IList<ListItem> Customers
         {
@@ -45,6 +45,15 @@ namespace Selenium.DSL.PageObjects
         {
             GetDropDownList("ContentPlaceHolder1_ctl01_2_DropDownList1_2").SelectByValue(value);
         }
+
+        public Pager Pager()
+        {
+            if(pagerControl == null)
+                pagerControl = new Pager(driver);
+
+            return pagerControl;
+        }
+
 
         public IList<OrderRow> Rows
         {
