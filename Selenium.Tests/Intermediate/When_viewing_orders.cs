@@ -1,9 +1,10 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium.IE;
+using Selenium.Tests.Support;
 
 namespace Selenium.Tests.Intermediate
 {
@@ -12,32 +13,32 @@ namespace Selenium.Tests.Intermediate
     {
         private IWebDriver driver;
 
-        //[TestFixtureSetUp]
-        //public void FixtureSetup()
-        //{
-        //    driver = new FirefoxDriver();
-        //    driver.Navigate().GoToUrl("http://localhost:1392/");
-        //}
+        [TestFixtureSetUp]
+        public void FixtureSetup()
+        {
+            driver = new FirefoxDriver();
+            driver.Navigate().GoToUrl("http://localhost:1392/");
+        }
 
 
-        //[TestFixtureTearDown]
-        //public void FixtureTearDown()
-        //{
-        //    driver.Quit();
-        //}
+        [TestFixtureTearDown]
+        public void FixtureTearDown()
+        {
+            driver.Quit();
+        }
 
-        //[SetUp]
-        //public void TestSetup()
-        //{
-        //    driver.Navigate().GoToUrl("http://localhost:1392/");
-        //    Login();            
-        //}
+        [SetUp]
+        public void TestSetup()
+        {
+            driver.Navigate().GoToUrl("http://localhost:1392/");
+            Login();
+        }
 
-        //[TearDown]
-        //public void TestTearDown()
-        //{
-        //    Logout();
-        //}
+        [TearDown]
+        public void TestTearDown()
+        {
+            Logout();
+        }
 
         public void Login(IWebDriver driverToUse=null)
         {
@@ -82,61 +83,28 @@ namespace Selenium.Tests.Intermediate
         }
 
         [Test]
-        public void Should_page_through_items_in_chrome()
+        public void Should_display_expected_dynamic_data()
         {
-            IWebDriver chromeDriver = new ChromeDriver(@"C:\Dropbox\Presentations\Full Sessions\Selenium a UI testing paradigm\Code\Selenium\Selenium.Tests\bin\Debug");
-            chromeDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(10));
+            var dbSupport = new DatabaseSupport(ConfigurationManager.ConnectionStrings["Northwind"].ConnectionString);
+            var rowData = dbSupport.RunScript("TestScripts\\ViewingOrders_RowData.sql", true).Tables[0].Rows[0];
+            
+            driver.FindElement(By.LinkText("Orders")).Click();
 
-            chromeDriver.Navigate().GoToUrl("http://localhost:1392/");
-            Login(chromeDriver);
+            var row = new OrderRow(driver.FindElements(By.XPath("//table/tbody/tr[2]/td")));
 
-            chromeDriver.FindElement(By.LinkText("Orders")).Click();
-
-            for (int i = 0; i < 82; i++)
-            {
-                IWebElement nextButton = chromeDriver.FindElement(By.Id("ContentPlaceHolder1_GridView1_ctl00_ImageButtonNext"));
-
-                nextButton.Click();
-
-                IWebElement pageCount = chromeDriver.FindElement(By.Id("ContentPlaceHolder1_GridView1_ctl00_TextBoxPage"));
-
-                int pageNumber = int.Parse(pageCount.GetAttribute("value"));
-
-                Assert.AreEqual(i +2 , pageNumber);
-            }
-
-            chromeDriver.FindElement(By.Id("LoginStatus1")).Click(); ;
-            chromeDriver.Quit();
+            DataComparer.CheckObjectMatchesData(row, rowData);
         }
 
-        
         [Test]
-        public void Should_page_through_items_in_IE()
+        public void Should_display_expected_static_data()
         {
-            IWebDriver ieDriver = new InternetExplorerDriver();
-            ieDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(10));
-            ieDriver.Navigate().GoToUrl("http://localhost:1392/");
-            Login(ieDriver);
+            var expected = new List<string>{"Edit Delete Details", "04/07/1996 00:00:00","01/08/1996 00:00:00","16/07/1996 00:00:00","33.0000","Vins et alcools Chevalier","59 rue de l'Abbaye","Reims","","51100","France","Vins et alcools Chevalier","Buchanan","View Order_Details","Federal Shipping" };
 
-            ieDriver.FindElement(By.LinkText("Orders")).Click();
+            driver.FindElement(By.LinkText("Orders")).Click();
 
-            for (int i = 0; i < 20; i++)
-            {
-                IWebElement nextButton = ieDriver.FindElement(By.Id("ContentPlaceHolder1_GridView1_ctl00_ImageButtonNext"));
+            var row = driver.FindElements(By.XPath("//table/tbody/tr[2]/td")).Select(e => e.Text).ToList();
 
-                nextButton.Click();
-
-                IWebElement pageCount = ieDriver.FindElement(By.Id("ContentPlaceHolder1_GridView1_ctl00_TextBoxPage"));
-
-                int pageNumber = int.Parse(pageCount.GetAttribute("value"));
-
-                Assert.AreEqual(i + 2, pageNumber);
-            }
-
-            ieDriver.FindElement(By.Id("LoginStatus1")).Click();
-            ieDriver.Quit();
+            CollectionAssert.AreEqual(expected, row);
         }
-
-        
     }
 }
